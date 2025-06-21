@@ -1,18 +1,35 @@
+
+
 const express=require('express');
 
 const app=express();
 
-  app.use('/test', (req,res)=>{
-     res.send("hello form test sever");
-  });
-   app.use("/hello", (req,res)=>{
-     res.send("hello form  hello server");
-  });
-  app.use("/an", (req,res)=>{
-     res.send("hello form  ano server");
-  });
+//middlewares-the funtions that we put in middle before the respone part are all
+//come inside middlewares
+//auth is also a middleware   
 
-app.listen(7777,()=>{
+//impleted auth here right agar is route pe call aa rha h to pehle check kro if this req is actually send by admin
+//do the user actually have that tocken if not sent an error write
+//write a single auth for admin and for any admin related route first this auth middle ware will be checken only then the page will be loaded
+
+
+
+
+
+ 
+  app.get("/admin/getAlldata",(req,res)=>{
+        res.send("all data sent");
+  })
+
+  
+  app.get("/admin/deleteUser",(req,res)=>{
+        res.send("User deleted");
+  })
+
+
+  
+   
+   app.listen(7777,()=>{
      console.log("server started at port 7777")
 });
 
