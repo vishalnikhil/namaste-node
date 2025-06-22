@@ -6,27 +6,33 @@ const app=express();
 
 const User=require("./models/user")
 
+app.use(express.json()); //this is a middleware for json data conversion
+
 
 //in this new fashion right way we first connect to db then listen at a specific port
 //if db is not connected propery dont start server just show eroor in db
- app.post("/signup",async (req,res)=>{   //add signup data to db post http method
+ app.post("/signup",async (req,res)=>{    //add signup data to db post http method
            
-        const userObj={
+       console.log(req.body);  //req.body now has the object from the user input
 
-             firstName:"Ms",
-             lastName:"DHoni",
-             emailId:"dhoni@123",
-             password:"dhoni",
-             age:43
+       
+        const userObj=req.body;
 
-        }
+
+         //this is hardcoded data right how can i make this dynamic as in for a user
+
+      //        firstName:"Ms",
+      //        lastName:"DHoni",
+      //        emailId:"dhoni@123",
+      //        password:"dhoni",
+      //        age:43
+
+        
 
         //craeting a new instance of user model
-
-
         try{
           const user=new User(userObj);
-        await user.save(); //this function return a promise
+        await user.save(); //this function return a promise thats why we use await here
 
         res.send("user added succesfully");
 
@@ -35,11 +41,65 @@ const User=require("./models/user")
           res.status(404).send("something went wrong")
         }
 
-      //   const user=new User(userObj);
-      //   await user.save(); //this function return a promise
+        const user=new User(userObj);
+        await user.save(); //this function return a promise
 
-      //   res.send("user added succesfully");
+        res.send("user added succesfully");
  })
+
+ //GET user by email
+
+  app.get("/user",async(req,res)=>{
+        
+       const email=req.body.emailId;
+
+       try{
+          const user=await User.find({emailId:email}) //you should never allow 2 users with same email right
+
+            res.send(user);
+
+       }
+       catch(err){
+
+         res.status(400).send("something went wrong");
+
+       }
+
+       //how will i find the user with  email
+
+  
+
+
+
+  })
+ 
+ //i need to craete the feed api it gets the data from database and use it to show feeds 
+  app.get("/feed",async(req,res)=>{
+
+        //to get data from db you need to know what will you get from the db   (MODEL)
+
+         //we use model to find data in db
+
+        
+
+         try{
+
+             const users=await User.find({});  //since this is an empty object so it will return all the data in our database
+
+             res.send(users);
+
+         }
+         catch(err){
+
+         res.status(400).send("something went wrong");
+
+       }
+
+
+
+
+       
+   })
 
 
 
