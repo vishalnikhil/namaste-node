@@ -3,6 +3,8 @@ const mongoose=require('mongoose');
 // const { use } = require('react');
 
 //this is schema for the user
+const validator=require('validator');
+
 
 const userSchema=new mongoose.Schema({
 
@@ -10,7 +12,7 @@ const userSchema=new mongoose.Schema({
       firstName:{
         type:String,
 
-        required:true
+        required:true  
          
 
       },
@@ -27,7 +29,14 @@ const userSchema=new mongoose.Schema({
              required:true,
              unique:true ,
              lowercase:true,
-             trim:true
+             trim:true,
+             validate(value){
+
+                 if(!validator.isEmail(value)){
+                       throw new Error("please enter a valid email id ");
+                 }
+                 
+             }
       },
 
 

@@ -19,9 +19,27 @@ User.find({}) will give you all documents in mongo db
 
 User.findOne return only only that matches(random)
 
+
 learner a lot about schema validation required default unique trim
 
 validate(value) //to validate some condition then only add user like gender should only be male female or other
+
+add more validator for every input field(validation is very important)
+
+//for validation there is a libraray called validator to validate email npm i validator
+ isvalid email ,, is strong password
+
+
+validation can be done in schema level as well as api level
+
+never trust request.body
+
+//once you hash a password that is encryt then you cannot get your password back for the hash 
+hence the user will only know his password
+
+for hashing passwrod we use bcrypt library
+
+
 
 
 
