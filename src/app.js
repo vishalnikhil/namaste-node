@@ -11,7 +11,7 @@ app.use(express.json()); //this is a middleware for json data conversion
 
 //in this new fashion right way we first connect to db then listen at a specific port
 //if db is not connected propery dont start server just show eroor in db
- app.post("/signup",async (req,res)=>{    //add signup data to db post http method
+ app.post("/signup",async (req,res)=>{    //add signup data to db post http method 
            
        console.log(req.body);  //req.body now has the object from the user input
 
@@ -99,6 +99,53 @@ app.use(express.json()); //this is a middleware for json data conversion
 
 
        
+   })
+
+   
+   //delete any user
+   app.delete("/user",async(req,res)=>{
+         
+        const userId=req.body.userId;
+
+        try{
+
+             const user=await User.findByIdAndDelete(userId);
+
+             res.send("user deleted succesfully");
+
+        }
+        catch(err){
+            res.status(400).send("something went wrong")
+        }
+   })
+
+   //how to write api to updte patch put  yad karo diff btwn patch and put
+
+   app.patch("/user",async(req,res)=>{
+
+         const data=req.body;
+         const userId=req.body.userId;
+
+         // console.log(data);
+         //if you are trying to update something that is not present in the schema then nothing will happen 
+         //it ignore all other data that are not in schema
+
+
+         try{
+
+             await User.findByIdAndUpdate({_id:userId},data,{runValidators:true}); //there is a extra parameter options which is passed as object
+
+             res.send("user updated succesfully");
+
+           
+
+         }
+
+          catch(err){
+            res.status(400).send("something went wrong"+err.message);
+        }
+       
+
    })
 
 
