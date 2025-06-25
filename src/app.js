@@ -8,9 +8,18 @@ const bcrypt = require('bcrypt');
 
 const User=require("./models/user")
 
-const {validateSignUpData}=require('./utils/validation')
+const jwt=require("jsonwebtoken");
+
+const {UserAuth}=require('./Middlewares/auth');  //now i can add the userauth to any api
+
+// const cookieParser=require('cookie-parser');
+
+const {validateSignUpData}=require('./utils/validation');
+const cookieParser = require('cookie-parser');
 
 app.use(express.json()); //this is a middleware for json data conversion
+
+app.use(cookieParser()); // this is a middleware to read cookie
 
 
 //in this new fashion right way we first connect to db then listen at a specific port
@@ -98,6 +107,37 @@ app.use(express.json()); //this is a middleware for json data conversion
  })
 
 
+ //we need something to check for token like profile 
+
+ //to read cookie we neeed a parser to par it to json form we use midddleware cookieparser
+
+ app.get("/profile",UserAuth,async(req,res)=>{ //aab agar auth sahi reha to next() call hoga warna yehi se error
+
+      // const cookie=req.cookies;
+
+      //  const {token}=cookie;
+
+       //after login the cookie was craeted and now when api of get profile is 
+       //called we will recieve the cookie from browser and now here we will validate out token
+
+
+       //validate my token
+
+      //  const decoded_id= await jwt.verify(token,"Nikhil@143") //using the secreted key you will get the user id of user which you hided 
+
+      //  console.log(decoded_id);
+
+      const user=req.user;
+
+       
+
+
+      res.send(user);
+       
+
+ })
+
+
  //validate login privous was signup
 
  app.post("/login",async(req,res)=>{
@@ -114,19 +154,31 @@ app.use(express.json()); //this is a middleware for json data conversion
             const user=await User.findOne({emailId:emailId});
 
             if(!user){
-                 throw new Error("email id is not present in db");
+                 throw new Error("Invalid credentials");
             }
-
-
 
            const isPasswordValid=await bcrypt.compare(password,user.password);
 
            if(isPasswordValid){
+   
+               //since password is correct here i will create token to cookie and send the response to user
+
+              //  res.cookie("token","wakgfkgfvukqygfykagfkqgfkuqgfaqfkaquf"); //this is the token i am assigning to the user
+               //for this token we will use jwt to give user the token 
+
+               const token= await jwt.sign({_id:user._id},"Nikhil@143",{ expiresIn: '10h' });
+
+               console.log(token);
+
+               res.cookie("token",token);
+
+
+             
                res.send("login succesfull");
            }
 
            else{
-             throw new Error("please enter the correct password")
+             throw new Error("Invalid credentials")
            }
 
 
@@ -168,7 +220,7 @@ app.use(express.json()); //this is a middleware for json data conversion
   })
  
  //i need to craete the feed api it gets the data from database and use it to show feeds 
-  app.get("/feed",async(req,res)=>{
+  app.get("/feed",UserAuth,async(req,res)=>{
 
         //to get data from db you need to know what will you get from the db   (MODEL)
 
@@ -191,6 +243,18 @@ app.use(express.json()); //this is a middleware for json data conversion
 
 
        
+   })
+
+   app.post("/sendConnection",UserAuth,async(req,res)=>{
+
+
+       //aab koi connect send kr rha hai to logged in bhi hoga mtlb auth call karna parega
+       //aur auth call hua to user bhi store ho gya hoga req mein
+
+       res.send(req.user.firstName +": sent the connection req sent");
+
+        
+         
    })
 
    
