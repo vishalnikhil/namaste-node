@@ -77,6 +77,19 @@ const {validateEditprofileData}=require("../utils/validation")
     
  })
 
+ profileRouter.patch("/profile/editpassword",UserAuth,async(req,res)=>{
+
+
+
+           //user auth added hai mtlb password jo dala tha wo sahi tha
+
+           ///
+
+
+           
+
+ })
+
 
 
 module.exports=profileRouter;
