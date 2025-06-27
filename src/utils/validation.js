@@ -24,6 +24,43 @@ const validateSignUpData=(req)=>{
 
 }
 
+const validateEditprofileData=(req)=>{
+      
+        const allowedEdit=["firstName","lastName","emailId","about","skills"];
+
+
+     const isEditAllowed = Object.keys(req.body).every((field) => {
+    return allowedEdit.includes(field);
+});
+
+
+
+        if(!isEditAllowed){
+            
+              throw new Error("YOU CAN'T EDIT THIS");
+        }  
+
+
+        //edit is allowed
+
+        //loop krle sare values ko update kro and 
+        //then save it to db
+
+        //req.body mein jo changes krna hai wo hai aur user mein sara original data hai db ka
+
+
+       
+
+   
+
+}
+
+
+
+
+
+
+
 module.exports={
-    validateSignUpData,
+    validateSignUpData,validateEditprofileData
 }

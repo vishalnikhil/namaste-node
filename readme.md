@@ -40,6 +40,13 @@ hence the user will only know his password
 for hashing passwrod we use bcrypt library
 
 
+// itne api sirf app.js mein agar jyada bara app to dikkat hoga is liye we use express.router() specific api ko group krte hai aur iske 
+route banate hai bilkul waise hi am karta hai jaise app.js mein krta tha phir isko app.js mein import krte hai
+
+
+
+
+
 
 
 

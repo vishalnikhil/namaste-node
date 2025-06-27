@@ -1,5 +1,5 @@
 
-require('./config/database')
+ require('./config/database')
 const express=require('express');
 const connectDB=require('./config/database')
 const app=express();
@@ -12,7 +12,7 @@ const jwt=require("jsonwebtoken");
 
 const {UserAuth}=require('./Middlewares/auth');  //now i can add the userauth to any api
 
-// const cookieParser=require('cookie-parser');
+
 
 const {validateSignUpData}=require('./utils/validation');
 const cookieParser = require('cookie-parser');
@@ -22,50 +22,65 @@ app.use(express.json()); //this is a middleware for json data conversion
 app.use(cookieParser()); // this is a middleware to read cookie
 
 
+
+
+const authRouter=require('./routes/auth');
+const requestRouter=require('./routes/request')
+const profileRouter=require('./routes/profile')
+
+
+  app.use("/",authRouter);
+  app.use("/",requestRouter);
+  app.use("/",profileRouter);
+
+
+
+
+
 //in this new fashion right way we first connect to db then listen at a specific port
 //if db is not connected propery dont start server just show eroor in db
- app.post("/signup",async (req,res)=>{    //add signup data to db post http method 
+//  app.post("/signup",async (req,res)=>{    //add signup data to db post http method 
            
-       //first thing that should happen when someone hits this api is
-       //VALIDATION agar kuch galat hai yehi error throw kro
+//        //first thing that should happen when someone hits this api is
+//        //VALIDATION agar kuch galat hai yehi error throw kro
 
-       try{
-
-
-         validateSignUpData(req);
-
-       const { firstName, lastName, emailId, password,gender } = req.body;
-
-         const passwordHash=await bcrypt.hash(password,10);
-
-         // console.log(passwordHash);
+//        try{
 
 
+//          validateSignUpData(req);
 
-           const userObj={
+//        const { firstName, lastName, emailId, password,gender } = req.body;
 
-           firstName,
-           lastName,
-           emailId,
-           password:passwordHash,
-           gender,
-           }
+//          const passwordHash=await bcrypt.hash(password,10);
+
+//          // console.log(passwordHash);
 
 
-              const user=new User(userObj);
-        await user.save(); //this function return a promise thats why we use await here
 
-        res.send("user added succesfully");
+//            const userObj={
 
-        }
+//            firstName,
+//            lastName,
+//            emailId,
+//            password:passwordHash,
+//            gender,
+//            }
+
+
+//               const user=new User(userObj);
+//         await user.save(); //this function return a promise thats why we use await here
+
+//         res.send("user added succesfully");
+
+//         }
 
 
           
-          catch(err){
-            return res.status(400).send("something went wrong :"+ err.message);
-          }  
+//           catch(err){
+//             return res.status(400).send("something went wrong :"+ err.message);
+//           }  
           
-          //now encrypt the password then store in db
+//           //now encrypt the password then store in db
 
 
 
@@ -73,236 +88,233 @@ app.use(cookieParser()); // this is a middleware to read cookie
 
 
 
-      //  console.log(req.body);  //req.body now has the object from the user input
+//       //  console.log(req.body);  //req.body now has the object from the user input
 
       
 
 
-         //this is hardcoded data right how can i make this dynamic as in for a user
+//          //this is hardcoded data right how can i make this dynamic as in for a user
 
-      //        firstName:"Ms",
-      //        lastName:"DHoni",
-      //        emailId:"dhoni@123",
-      //        password:"dhoni",
-      //        age:43
+//       //        firstName:"Ms",
+//       //        lastName:"DHoni",
+//       //        emailId:"dhoni@123",
+//       //        password:"dhoni",
+//       //        age:43
 
         
 
-        //craeting a new instance of user model
-      //   try{
-      //     const user=new User(userObj);
-      //   await user.save(); //this function return a promise thats why we use await here
+//         //craeting a new instance of user model
+//       //   try{
+//       //     const user=new User(userObj);
+//       //   await user.save(); //this function return a promise thats why we use await here
 
-      //   res.send("user added succesfully");
+//       //   res.send("user added succesfully");
 
-      //   }
-      //   catch(err){
-      //     res.status(404).send("something went wrong"+err.message)
-      //   }
+//       //   }
+//       //   catch(err){
+//       //     res.status(404).send("something went wrong"+err.message)
+//       //   }
 
-      //   const user=new User(userObj);
-      //   await user.save(); //this function return a promise
+//       //   const user=new User(userObj);
+//       //   await user.save(); //this function return a promise
 
-      //   res.send("user added succesfully");
- })
-
+//       //   res.send("user added succesfully");
+//  })
 
  //we need something to check for token like profile 
 
  //to read cookie we neeed a parser to par it to json form we use midddleware cookieparser
 
- app.get("/profile",UserAuth,async(req,res)=>{ //aab agar auth sahi reha to next() call hoga warna yehi se error
+//  app.get("/profile",UserAuth,async(req,res)=>{ //aab agar auth sahi reha to next() call hoga warna yehi se error
 
-      // const cookie=req.cookies;
+//       // const cookie=req.cookies;
 
-      //  const {token}=cookie;
+//       //  const {token}=cookie;
 
-       //after login the cookie was craeted and now when api of get profile is 
-       //called we will recieve the cookie from browser and now here we will validate out token
+//        //after login the cookie was craeted and now when api of get profile is 
+//        //called we will recieve the cookie from browser and now here we will validate out token
 
 
-       //validate my token
+//        //validate my token
 
-      //  const decoded_id= await jwt.verify(token,"Nikhil@143") //using the secreted key you will get the user id of user which you hided 
+//       //  const decoded_id= await jwt.verify(token,"Nikhil@143") //using the secreted key you will get the user id of user which you hided 
 
-      //  console.log(decoded_id);
+//       //  console.log(decoded_id);
 
-      const user=req.user;
+//       const user=req.user;
 
        
 
 
-      res.send(user);
+//       res.send(user);
        
 
- })
+//  })
 
 
  //validate login privous was signup
 
- app.post("/login",async(req,res)=>{
+//  app.post("/login",async(req,res)=>{
 
-       try{
+//        try{
 
 
-           //pehle jo passwrod dala hai wo correct bhi to hona chaiye
+//            //pehle jo passwrod dala hai wo correct bhi to hona chaiye
 
-           const {emailId,password}=req.body;
+//            const {emailId,password}=req.body;
 
-            //check if user is present in the db or not
+//             //check if user is present in the db or not
 
-            const user=await User.findOne({emailId:emailId});
+//             const user=await User.findOne({emailId:emailId});
 
-            if(!user){
-                 throw new Error("Invalid credentials");
-            }
+//             if(!user){
+//                  throw new Error("Invalid credentials");
+//             }
 
-           const isPasswordValid=await bcrypt.compare(password,user.password);
+//            const isPasswordValid=await bcrypt.compare(password,user.password);
 
-           if(isPasswordValid){
+//            if(isPasswordValid){
    
-               //since password is correct here i will create token to cookie and send the response to user
+//                //since password is correct here i will create token to cookie and send the response to user
 
-              //  res.cookie("token","wakgfkgfvukqygfykagfkqgfkuqgfaqfkaquf"); //this is the token i am assigning to the user
-               //for this token we will use jwt to give user the token 
+//               //  res.cookie("token","wakgfkgfvukqygfykagfkqgfkuqgfaqfkaquf"); //this is the token i am assigning to the user
+//                //for this token we will use jwt to give user the token 
 
-               const token= await jwt.sign({_id:user._id},"Nikhil@143",{ expiresIn: '10h' });
+//                const token= await jwt.sign({_id:user._id},"Nikhil@143",{ expiresIn: '10h' });
 
-               console.log(token);
+//                console.log(token);
 
-               res.cookie("token",token);
+//                res.cookie("token",token);
 
 
              
-               res.send("login succesfull");
-           }
+//                res.send("login succesfull");
+//            }
 
-           else{
-             throw new Error("Invalid credentials")
-           }
-
-
-       }
-
-       catch(err){
-
-           res.status(400).send("something went wrong :"+err.message);
-
-       }
-
- })
+//            else{
+//              throw new Error("Invalid credentials")
+//            }
 
 
+//        }
 
+//        catch(err){
 
+//            res.status(400).send("something went wrong :"+err.message);
+
+//        }
+
+//  })
 
  //GET user by email
-  app.get("/user",async(req,res)=>{
+  // app.get("/user",async(req,res)=>{
         
-       const email=req.body.emailId;
+  //      const email=req.body.emailId;
 
-       try{
-          const user=await User.find({emailId:email}) //you should never allow 2 users with same email right
+  //      try{
+  //         const user=await User.find({emailId:email}) //you should never allow 2 users with same email right
 
-            res.send(user);
+  //           res.send(user);
 
-       }
-         catch(err){
-          res.status(404).send("something went wrong"+err.message)
-        }
+  //      }
+  //        catch(err){
+  //         res.status(404).send("something went wrong"+err.message)
+  //       }
 
-       //how will i find the user with  email
+  //      //how will i find the user with  email
 
   
 
 
 
-  })
+  // })
  
  //i need to craete the feed api it gets the data from database and use it to show feeds 
-  app.get("/feed",UserAuth,async(req,res)=>{
+  // app.get("/feed",UserAuth,async(req,res)=>{
 
-        //to get data from db you need to know what will you get from the db   (MODEL)
+  //       //to get data from db you need to know what will you get from the db   (MODEL)
 
-         //we use model to find data in db
+  //        //we use model to find data in db
 
         
 
-         try{
+  //        try{
 
-             const users=await User.find({});  //since this is an empty object so it will return all the data in our database
+  //            const users=await User.find({});  //since this is an empty object so it will return all the data in our database
 
-             res.send(users);
+  //            res.send(users);
 
-         }
-            catch(err){
-          res.status(404).send("something went wrong"+err.message)
-        }
+  //        }
+  //           catch(err){
+  //         res.status(404).send("something went wrong"+err.message)
+  //       }
 
 
 
 
        
-   })
+  //  })
 
-   app.post("/sendConnection",UserAuth,async(req,res)=>{
+  //  app.post("/sendConnection",UserAuth,async(req,res)=>{
 
 
-       //aab koi connect send kr rha hai to logged in bhi hoga mtlb auth call karna parega
-       //aur auth call hua to user bhi store ho gya hoga req mein
+  //      //aab koi connect send kr rha hai to logged in bhi hoga mtlb auth call karna parega
+  //      //aur auth call hua to user bhi store ho gya hoga req mein
 
-       res.send(req.user.firstName +": sent the connection req sent");
+  //      res.send(req.user.firstName +": sent the connection req sent");
 
         
          
-   })
+  //  })
 
    
    //delete any user
-   app.delete("/user",async(req,res)=>{
+   
+   
+  //  app.delete("/user",async(req,res)=>{
          
-        const userId=req.body.userId;
+  //       const userId=req.body.userId;
 
-        try{
+  //       try{
 
-             const user=await User.findByIdAndDelete(userId);
+  //            const user=await User.findByIdAndDelete(userId);
 
-             res.send("user deleted succesfully");
+  //            res.send("user deleted succesfully");
 
-        }
-          catch(err){
-          res.status(404).send("something went wrong"+err.message)
-        }
-   })
+  //       }
+  //         catch(err){
+  //         res.status(404).send("something went wrong"+err.message)
+  //       }
+  //  })
 
    //how to write api to updte patch put  yad karo diff btwn patch and put
 
-   app.patch("/user",async(req,res)=>{
+  //  app.patch("/user",async(req,res)=>{
 
-         const data=req.body;
-         const userId=req.body.userId;
+  //        const data=req.body;
+  //        const userId=req.body.userId;
 
-         // console.log(data);
-         //if you are trying to update something that is not present in the schema then nothing will happen 
-         //it ignore all other data that are not in schema
+  //        // console.log(data);
+  //        //if you are trying to update something that is not present in the schema then nothing will happen 
+  //        //it ignore all other data that are not in schema
 
 
-         try{
+  //        try{
 
-             await User.findByIdAndUpdate({_id:userId},data,{runValidators:true}); //there is a extra parameter options which is passed as object
+  //            await User.findByIdAndUpdate({_id:userId},data,{runValidators:true}); //there is a extra parameter options which is passed as object
 
-             res.send("user updated succesfully");
+  //            res.send("user updated succesfully");
 
            
 
-         }
+  //        }
 
-          catch(err){
-            res.status(400).send("something went wrong"+err.message);
-        }
+  //         catch(err){
+  //           res.status(400).send("something went wrong"+err.message);
+  //       }
        
 
-   })
+  //  })
 
 
 

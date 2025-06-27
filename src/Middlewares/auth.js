@@ -27,7 +27,7 @@
 
         //yeh pahuche hai mtlb user mila gya hai to beeter rahega isko req mein attack kr do
 
-            req.user=user;
+        req.user=user;
 
         next(); //
      }
@@ -37,10 +37,6 @@
      }
 
 
-
-
-
-      
       
   }
 
