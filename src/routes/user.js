@@ -36,5 +36,51 @@ userRouter.get("/user/requests/recieved",UserAuth,async(req,res)=>{
       }
 })
 
+userRouter.get("/user/connection",UserAuth,async(req,res)=>{
+
+
+      try {
+          const loggedInUser=req.user;
+
+      const connectionRequest=await ConnectionRequest.find({
+
+           $or:[
+
+            {toUserId:loggedInUser._id, status:"accepted"},
+            { fromUserId:loggedInUser._id ,status:"accepted"}
+
+
+           ],
+
+      }).populate("fromUserId","firstName lastName age skills about gender")
+      .populate("toUserId","firstName lastName age skills about gender")
+      
+
+        //abhi jo data mere ps aaya hai usme humko sab kuch display nhi krwana sirf imp chiz jaise name age 
+
+        const data=connectionRequest.map((row)=>{  //yeh data dono se aa skta hai from ya to check krna parega n
+            if(row.fromUserId._id.toString()===loggedInUser._id.toString()){
+                return row.toUserIdl
+            }
+
+            return row.fromUserId;  
+        });
+
+
+      res.json({ message:"all connections fetched succesfully", data:data})
+
+        
+      } catch (err) {
+
+
+            res.status(400).send("error " + err.message);
+        
+      }
+
+    
+
+
+})
+
 
 module.exports=userRouter;
