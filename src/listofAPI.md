@@ -33,9 +33,11 @@ this 2 api can also be clubbed now keep in mind you can only accept or reject if
 
  ## userRouter
 
+
+  -get/user/requests/recieved   //gets you all the pending request for the logged in user
   -get/user/connections
-  -get/user/requests
   -get/user/feed
+  
   -get/user/profile
 
   this is get api it fill fetch data from db be carefull you will give data to the user that are in their scope
