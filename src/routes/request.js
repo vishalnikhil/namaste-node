@@ -121,5 +121,75 @@ const User = require('../models/user');
 
  })              
 
+  requestRouter.post("/request/review/:status/:requestId",UserAuth,async(req,res)=>{ //here also dynamic route is used
+         
+     
+
+     try {
+
+
+           const loggedInUser=req.user; //userauth has attaccked it while finding
+
+           //nikhil=>dhoni connection so dhoni should be logged in to accept or reject
+
+           //the logged in user must have got the request
+           //i.e loggedin user=to user id
+           //status right now should only be interested
+           //request id should be valid
+
+            const {status,requestId}=req.params;
+
+           const allowedStatus=["accepted","rejected"];
+
+          
+
+           if(!allowedStatus.includes(status)){
+                 throw new Error("status is not allowed")
+           }
+
+
+           const connectionRequest=await ConnectionRequest.findOne({
+
+                _id:requestId ,
+                toUserId: loggedInUser._id,
+                status:"interested",
+
+           })
+
+
+           if(!connectionRequest){
+                throw new Error("this connection doest not exists");
+           }
+
+
+           //now i modify my status
+
+           connectionRequest.status=status;
+
+        const data =await connectionRequest.save();
+
+        res.json({message:"connection request : "+status ,data});
+
+
+     } 
+     
+     
+     catch (err) {
+
+
+           res.status(400).send("eror :" +err.message);
+         
+
+          
+     }
+
+   
+
+
+
+         
+  })
+
+  
 module.exports=requestRouter;
     

@@ -77,11 +77,12 @@ const {validateEditprofileData}=require("../utils/validation")
     
  })
 
- profileRouter.patch("/profile/editpassword",UserAuth,async(req,res)=>{
+ profileRouter.patch("/profile/editpassword",UserAuth,async(req,res)=>{    //bad m bamayege
 
 
 
            //user auth added hai mtlb password jo dala tha wo sahi tha
+
 
            ///
 

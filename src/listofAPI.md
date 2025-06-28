@@ -26,9 +26,21 @@ post/request/send/:status/:userId
 -post/ request/review/accepted/:requestID
 -post /request/review/rejected/:requestID
 
+this 2 api can also be clubbed now keep in mind you can only accept or reject if the current status is intrested
 
 
--get /feed
+
+
+ ## userRouter
+
+  -get/user/connections
+  -get/user/requests
+  -get/user/feed
+  -get/user/profile
+
+  this is get api it fill fetch data from db be carefull you will give data to the user that are in their scope
+  //next world war will happen because of DATA
+  //DATA is the New OIL
 
 
 

@@ -19,7 +19,7 @@ User.find({}) will give you all documents in mongo db
 
 User.findOne return only only that matches(random)
 
-
+  
 learner a lot about schema validation required default unique trim
 
 validate(value) //to validate some condition then only add user like gender should only be male female or other
