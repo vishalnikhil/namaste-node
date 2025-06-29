@@ -100,7 +100,7 @@ const User = require('../models/user');
         
         res.json({
 
-             message:"connection request sent succesfully",
+             message: `${req.user.firstName} sent a connection request to ${ToUser.firstName} successfully`,
              data,
 
         })
