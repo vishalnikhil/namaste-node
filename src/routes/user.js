@@ -83,4 +83,27 @@ userRouter.get("/user/connection",UserAuth,async(req,res)=>{
 })
 
 
+//feed api
+//this wont be easy
+
+userRouter.get("/feed",UserAuth,async(req,res)=>{
+
+          try {
+
+            //user should see all other cards excpet his own card and the ones whom they are already connected or ignored o
+            //the user should also not see the card of the people whom he has send request or recievd request from
+
+         
+          }
+     
+          catch (err) {
+
+              res.status(400).send("error :" + err.message);
+
+            
+          }
+
+})
+
+
 module.exports=userRouter;
