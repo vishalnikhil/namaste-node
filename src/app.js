@@ -12,14 +12,21 @@ const jwt=require("jsonwebtoken");
 
 const {UserAuth}=require('./Middlewares/auth');  //now i can add the userauth to any api
 
-
+const cors=require('cors')
 
 const {validateSignUpData}=require('./utils/validation');
 const cookieParser = require('cookie-parser');
 
+app.use(cors({
+  origin:"http://localhost:5173",
+  credentials:true,
+}));
+
 app.use(express.json()); //this is a middleware for json data conversion
 
 app.use(cookieParser()); // this is a middleware to read cookie
+
+
 
 
 
@@ -325,7 +332,7 @@ const userRouter = require('./routes/user');
 connectDB()
 
 .then(()=>{
-   console.log("data connected succesfully");
+   console.log("data connected succesfully ✅")
       app.listen(7777,()=>{
      console.log("server started at port 7777")
 });

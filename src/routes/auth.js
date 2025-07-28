@@ -129,14 +129,16 @@ const { UserAuth } = require('../Middlewares/auth');
 
                const token= await jwt.sign({_id:user._id},"Nikhil@143",{ expiresIn: '10h' });
 
+               if(!token){
+                 return res.status(401).send("please login !");
+               }
+
               //  console.log(token);
 
 
                res.cookie("token",token);
 
-
-             
-               res.send("login succesfull");
+               res.send(user);
            }
 
            else{

@@ -62,7 +62,7 @@ userRouter.get("/user/connection",UserAuth,async(req,res)=>{
 
         const data=connectionRequest.map((row)=>{  //yeh data dono se aa skta hai from ya to check krna parega n
             if(row.fromUserId._id.toString()===loggedInUser._id.toString()){
-                return row.toUserIdl
+                return row.toUserId;
             }
 
             return row.fromUserId;  
@@ -96,6 +96,10 @@ userRouter.get("/feed",UserAuth,async(req,res)=>{
             //the user should also not see the card of the people whom he has send request or recievd request from
              
             const loggedInUser=req.user;
+            const page= parseInt(req.query.page) || 1;
+            const limit=parseInt(req.query.limit) || 10;
+
+            const skip= (page-1) * limit;
 
 
              //now we need to find the card that we will not show to this user
@@ -141,6 +145,8 @@ userRouter.get("/feed",UserAuth,async(req,res)=>{
                   
 
              }).select("firstName lastName skills age about gender")
+             .skip(skip)
+             .limit(limit);
                
 
 
