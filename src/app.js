@@ -3,6 +3,8 @@
 const express=require('express');
 const connectDB=require('./config/database')
 const app=express();
+ 
+require('dotenv').config();
 
 const bcrypt = require('bcrypt');
 
@@ -333,7 +335,7 @@ connectDB()
 
 .then(()=>{
    console.log("data connected succesfully ✅")
-      app.listen(7777,()=>{
+      app.listen(process.env.PORT,()=>{
      console.log("server started at port 7777")
 });
 

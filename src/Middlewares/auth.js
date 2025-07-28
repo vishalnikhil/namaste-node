@@ -1,5 +1,9 @@
 
+ 
+ 
  const jwt=require("jsonwebtoken");
+
+
 
  const User=require("../models/user")
  //here will will read the token from req.cookies and then validate it after that we can use this function anywhere for authentication
@@ -15,7 +19,7 @@
 
         //now from the token we will get the id of the user using secret key
 
-        const decoded_id= await jwt.verify(token,"Nikhil@143");
+        const decoded_id= await jwt.verify(token,process.env.JWT_SECRET);
 
         const {_id}=decoded_id;
 

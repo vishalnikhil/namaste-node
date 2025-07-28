@@ -3,11 +3,13 @@
 const { default: mongoose } = require("mongoose")
 
 const connectDB=async()=>{
+
+  //  console.log(process.env.DB_CONNECTION_KEY)
      
   await mongoose.connect(
-  "mongodb+srv://vishalnikhil2002:r0WDRAViC0OW3FA5@nikhilscluster.9mupdtd.mongodb.net/devTinder?retryWrites=true&w=majority"
-);
+     process.env.DB_CONNECTION_KEY
 
+  );
 }
 
 module.exports=connectDB;

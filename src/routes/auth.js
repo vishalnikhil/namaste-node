@@ -127,7 +127,7 @@ const { UserAuth } = require('../Middlewares/auth');
               //  res.cookie("token","wakgfkgfvukqygfykagfkqgfkuqgfaqfkaquf"); //this is the token i am assigning to the user
                //for this token we will use jwt to give user the token 
 
-               const token= await jwt.sign({_id:user._id},"Nikhil@143",{ expiresIn: '10h' });
+               const token= await jwt.sign({_id:user._id},process.env.JWT_SECRET,{ expiresIn: '10h' });
 
                if(!token){
                  return res.status(401).send("please login !");
