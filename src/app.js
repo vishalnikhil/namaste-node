@@ -3,7 +3,7 @@
 const express=require('express');
 const connectDB=require('./config/database')
 const app=express();
- 
+ const http=require('http');
 require('dotenv').config();
 
 const bcrypt = require('bcrypt');
@@ -38,6 +38,7 @@ const authRouter=require('./routes/auth');
 const requestRouter=require('./routes/request')
 const profileRouter=require('./routes/profile');
 const userRouter = require('./routes/user');
+const initializeSocket = require('./utils/socket');
 
 
 
@@ -46,6 +47,28 @@ const userRouter = require('./routes/user');
   app.use("/",requestRouter);
   app.use("/",profileRouter);
   app.use("/",userRouter);
+
+  const server=http.createServer(app);
+
+  initializeSocket(server);
+
+  //shifted to a new file
+
+  // const socket=require('socket.io');
+  // const io=socket(server,{
+      
+  //     cors:{
+         
+  //         origin:["http://localhost:5173","http://localhost:5174"],
+
+  //     }
+  // });
+
+  // io.on("connection",(socket)=>{
+
+  //       //handle events
+
+  // })
 
 
 
@@ -336,7 +359,7 @@ connectDB()
 
 .then(()=>{
    console.log("data connected succesfully ✅")
-      app.listen(process.env.PORT,()=>{
+      server.listen(process.env.PORT,()=>{
      console.log("server started at port 7777")
 });
 
