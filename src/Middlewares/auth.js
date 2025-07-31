@@ -4,12 +4,10 @@
  const jwt=require("jsonwebtoken");
 
 
-
  const User=require("../models/user")
  //here will will read the token from req.cookies and then validate it after that we can use this function anywhere for authentication
  
  const UserAuth= async (req,res,next)=>{
-
 
        try{
 

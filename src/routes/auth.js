@@ -135,8 +135,7 @@ const { UserAuth } = require('../Middlewares/auth');
 
               //  console.log(token);
 
-
-               res.cookie("token",token);
+               res.cookie("token",token); //jwt
 
                res.send(user);
            }

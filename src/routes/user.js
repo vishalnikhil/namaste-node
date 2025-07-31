@@ -54,8 +54,8 @@ userRouter.get("/user/connection",UserAuth,async(req,res)=>{
 
            ],
 
-      }).populate("fromUserId","firstName lastName age skills about gender")
-      .populate("toUserId","firstName lastName age skills about gender")
+      }).populate("fromUserId","firstName lastName age skills about gender photoUrl")
+      .populate("toUserId","firstName lastName age skills about gender photoUrl")
       
 
         //abhi jo data mere ps aaya hai usme humko sab kuch display nhi krwana sirf imp chiz jaise name age 
@@ -144,7 +144,7 @@ userRouter.get("/feed",UserAuth,async(req,res)=>{
                  ]
                   
 
-             }).select("firstName lastName skills age about gender")
+             }).select("firstName lastName skills age about gender photoUrl")
              .skip(skip)
              .limit(limit);
                
