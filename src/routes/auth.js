@@ -135,7 +135,12 @@ const { UserAuth } = require('../Middlewares/auth');
 
               //  console.log(token);
 
-               res.cookie("token",token); //jwt
+               res.cookie("token", token, {
+  httpOnly: true,
+  secure: true,
+  sameSite: "None"
+});
+ //jwt
 
                res.send(user);
            }
@@ -157,7 +162,13 @@ const { UserAuth } = require('../Middlewares/auth');
 
 
  authRouter.post("/logout", UserAuth, async (req, res) => {
-  res.cookie("token", "", { expires: new Date(0) }); // expire the cookie
+  res.cookie("token", "", {
+  expires: new Date(0),
+  httpOnly: true,
+  secure: true,
+  sameSite: "None"
+});
+// expire the cookie
   res.send(`${req.user.firstName} Logged out`);
 });
 
