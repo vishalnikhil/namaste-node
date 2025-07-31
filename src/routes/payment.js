@@ -81,7 +81,7 @@ res.json({
       try {
 
 
-     const webhookSignature = req.get["X-Razorpay-Signature"];
+     const webhookSignature = req.get("X-Razorpay-Signature");
 
     const isWebhookValid = validateWebhookSignature(
 
